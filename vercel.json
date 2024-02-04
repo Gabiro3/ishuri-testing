@@ -1,14 +1,24 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "vercel_app/wsgi.py",
+      "src": "vercel_app/**",
       "use": "@vercel/python"
     }
   ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "vercel_app/static/$1"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "vercel_app/static/images/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "vercel_app/wsgi.py"
     }
   ]
 }
+
