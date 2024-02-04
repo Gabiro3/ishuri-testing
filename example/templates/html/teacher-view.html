@@ -1,0 +1,252 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="#" class="logo">
+        <i class='bx bx-book-reader'></i>
+        <div class="logo-name"><span>Ishuri</span>Bridge</div>
+    </a>
+    <ul class="side-menu">
+        <li class="active"><a href="{% url 'teacher' %}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+        <li><a href="{% url 'view-assignments' %}"><i class='bx bx-task'></i>Assignments</a></li>
+        <li><a href="#"><i class='bx bx-analyse'></i>Announcements</a></li>
+        <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
+        <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
+        <li><a href="{% url 'workspace' %}"><i class='bx bx-file'></i>WorkSpaces</a></li>
+        <li><a href="{% url 'user-profile' request.user.id%}"><i class='bx bx-cog'></i>Settings</a></li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class='bx bx-log-out-circle'></i>
+                Logout
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <!-- Navbar -->
+
+    <!-- End of Navbar -->
+
+    <main>
+        <div class="header">
+            <div class="left">
+                <h1>Dashboard</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#">
+                            Analytics
+                        </a></li>
+                    /
+                    <li><a href="#" class="active">Welcome!</a></li>
+                </ul>
+            </div>
+            <a href="https://scribehow.com/shared/How_to_use_Ishuri_Bridge__nLeT6_mQTxCQ2FT-OW9ZRA" class="report">
+                <i class='bx bx-cloud-download'></i>
+                <span>How to use Ishuri</span>
+            </a>
+        </div>
+
+        <!-- Insights -->
+        <ul class="insights">
+            <li>
+                <i class='bx bx-task'></i>
+                <span class="info">
+                    <h3>{{ assignments.count }}</h3>
+                    <p>Assignments</p>
+                    <div class="tooltiptext">
+                        <ul>
+                            {% for assignment in assignments %}
+                            <li>{{assignment.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </span>
+            </li>
+            <li>
+                <i class='bx bx-book'></i>
+                <span class="info">
+                    <h3>{{ classes_today.count }}</h3>
+                    <p>Classes</p>
+                    <div class="tooltiptext">
+                        <ul>
+                            {% for class in classes %}
+                            <li>{{class.name}} @{{class.hour}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </span>
+            </li>
+            <li>
+                <i class='bx bx-list-ul'></i>
+                <span class="info">
+                    <h3>{{ activities_today.count }}</h3>
+                    <p>Activities</p>
+                    <div class="tooltiptext">
+                        <ul>
+                            {% if activities %}
+                            <li>{{activities.name}} @{{activities.hour}}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </span>
+            </li>
+            <li>
+                <i class='bx bx-calendar'></i>
+                <span class="info">
+                    <h3>{{date}}th</h3>
+                    <p>{{month}}</p>
+                </span>
+            </li>
+        </ul>
+        
+        <!-- End of Insights -->
+
+        <div class="bottom-data">
+            <div class="orders">
+                <div class="header">
+                    <i class='bx bx-receipt'></i>
+                    <h3>Recent Assignments</h3>
+                    <i class='bx bx-filter'></i>
+                    <i class='bx bx-search'></i>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Details</th>
+                            <th>Assigned Class</th>
+                            <th>Submission Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assignment in assignments %}
+                        <tr>
+                            <td>
+                                <p>{{assignment.name}}</p>
+                            </td>
+                            <td>S{{assignment.assigned_class}}</td>
+                            <td>{{assignment.submission_date}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Reminders -->
+            <div class="reminders">
+                <div class="header">
+                    <i class='bx bx-note'></i>
+                    <h3>Today's Activities</h3>
+                    <i class='bx bx-filter'></i>
+                    <a href="{% url 'create-event' %}"><i class='bx bx-plus'></i></a>
+                </div>
+                <ul class="task-list">
+                    {% for field in  activities_today %}
+                    <li class="completed">
+                        <div class="task-title">
+                            <i class='bx bx-check-circle'></i>
+                            <p>{{field.name}}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- End of Reminders-->
+
+        </div>
+
+    </main>
+
+</div>
+<style>
+    /* Tooltip container styles */
+    .info {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    /* Tooltip text styles */
+    .info .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        border-radius: 30px;
+        background-color: #1975d1ff;
+        color: #131212;
+        text-align: left;
+        border-radius: 6px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        bottom: -60%;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    /* Show the tooltip text when hovering over the container */
+    .info:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    /* Style for the list inside the tooltip */
+    .info .tooltiptext ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info .tooltiptext li {
+        margin-bottom: 5px;
+    }
+</style>
+<!-- Updated JavaScript for Greeting and Activity Count -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check if the script has already been run
+        if (localStorage.getItem('greetingShown') !== 'true') {
+            // Check if the Notification API is supported
+            if ("Notification" in window) {
+                // Request permission for notifications
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === 'granted') {
+                        // Get the current hour
+                        var hour = new Date().getHours();
+
+                        // Determine the greeting based on the time of day
+                        var greeting;
+                        if (hour < 12) {
+                            greeting = "Good Morning";
+                        } else if (hour >= 12 && hour < 18) {
+                            greeting = "Good Afternoon";
+                        } else {
+                            greeting = "Good Evening";
+                        }
+
+                        // Get the user's name from Django's request.user
+                        var loggedInUserName = "{{ request.user.username }}";  // Replace with your Django template syntax
+
+                        // Get the activities count from Django's context
+                        var activitiesCount = '{{ activities_today.count }}';  // Replace with your Django template syntax
+
+                        // Create the notification message
+                        var notificationMessage = `${greeting} ${loggedInUserName}, You have ${activitiesCount} Activities on the list today.`;
+
+                        // Display the notification
+                        new Notification(notificationMessage);
+
+                        // Set the flag in localStorage to indicate that the script has been run
+                        localStorage.setItem('greetingShown', 'true');
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+
+{% endblock content %}

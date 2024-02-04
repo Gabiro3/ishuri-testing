@@ -1,25 +1,38 @@
-"""
-URL configuration for Ishuri project.
+from django.urls import path
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
+from . import views
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('base.urls')),
+    path('register/', views.registerPage, name="register"),
+    path('', views.loginPage, name="login"),
+    path('logout/', views.logoutUser, name="logout"),
+
+    path('teacher/', views.teacher, name="teacher"),
+
+    path('profile/<str:pk>', views.userProfile, name="user-profile"),
+    path('update-user/', views.updateUser, name="update-user"),
+
+    path('add-assignment/', views.createAssignment, name="add-assignment"),
+    path('delete-assignment/<str:pk>/', views.deleteAssignment, name="delete-assignment"),
+    path('assignments/', views.viewAssignments, name="view-assignments"),
+    path('update-assignment/<str:pk>/', views.updateAssignment, name="update-assignment"),
+
+    path('add-event/', views.createEvent, name="create-event"),
+    path('delete-event/<str:pk>/', views.deleteEvent, name="delete-event"),
+    path('activities/', views.viewActivities, name="view-activities"),
+    path('update-activity/<str:pk>/', views.updateActivity, name="update-activity"),
+
+    path('add-schedule/', views.createSchedule, name="create-schedule"),
+    path('delete-schedule/<str:pk>/', views.deleteSchedule, name="delete-schedule"),
+
+    path('add-class/', views.addClass, name="add-class"),
+    path('classes/', views.viewClasses, name="classes-view"),
+    path('update-class/<str:pk>/', views.updateClass, name="update-class"),
+    path('delete-class/<str:pk/', views.deleteClass, name="delete-class"),
+
+    path('workspaces/', views.workSpace, name="workspace"),
+    path('view-work/<str:name>', views.workSpaceView, name="view-work"),
+    path('create-workspace/', views.createWorkSpace, name="create-workspace"),
+    path('add-notes/<str:name>/', views.addNote, name="add-notes"),
+    path('delete-work/<str:pk>', views.deleteWorkSpace, name='delete-workspace')
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
