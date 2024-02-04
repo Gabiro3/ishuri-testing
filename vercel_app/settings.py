@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'vercel_app.wsgi.app'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 # Note: Django modules for using databases are not support in serverless
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
-
-DATABASES = {}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  # Use the appropriate database engine
+        'NAME': BASE_DIR / "db.sqlite3",       # Path to your database file
+    }
+}
 
 
 # Password validation
